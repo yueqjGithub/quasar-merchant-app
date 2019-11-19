@@ -1,0 +1,37 @@
+{
+  "id": "1227327",
+  "name": "sviwoHome",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "sviwo官网",
+  "glyphs": [
+    {
+      "icon_id": "88062",
+      "name": "left",
+      "font_class": "left",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "309932",
+      "name": "wode",
+      "font_class": "wode1",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "1208082",
+      "name": "home",
+      "font_class": "home",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "6582360",
+      "name": "应用",
+      "font_class": "yingyong",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    }
+  ]
+}

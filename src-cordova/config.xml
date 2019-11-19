@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.cordova.quasar.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>知了贝商户端</name>
+    <description>商户端介绍</description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <platform name="android">
+        <icon density="ldpi" src="images/icon/android/512.png" />
+        <icon density="mdpi" src="images/icon/android/384.png" />
+        <icon density="hdpi" src="images/icon/android/256.png" />
+        <icon density="xhdpi" src="images/icon/android/192.png" />
+        <icon density="xxhdpi" src="images/icon/android/128.png" />
+        <splash density="land-hdpi" src="images/screen/android/splash-land-hdpi.png" />
+        <splash density="land-ldpi" src="images/screen/android/splash-land-ldpi.png" />
+        <splash density="land-mdpi" src="images/screen/android/splash-land-mdpi.png" />
+        <splash density="land-xhdpi" src="images/screen/android/splash-land-xhdpi.png" />
+        <splash density="port-hdpi" src="images/screen/android/splash-port-hdpi.png" />
+        <splash density="port-ldpi" src="images/screen/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="images/screen/android/splash-port-mdpi.png" />
+        <splash density="port-xhdpi" src="images/screen/android/splash-port-xhdpi.png" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <preference name="StatusBarBackgroundColor" value="#8dc550" />
+    <allow-navigation href="http://192.168.1.169:8080" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="~5.0.3" />
+    <plugin name="cordova-plugin-camera" spec="~4.1.0" />
+    <plugin name="cordova-plugin-qrscanner" spec="~3.0.1" />
+</widget>

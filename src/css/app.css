@@ -1,0 +1,134 @@
+/* app global css */
+
+@import 'quasar.variables.less';
+@import 'iconfont.css';
+
+/*-------------icon-----------------*/
+.my-app-icon {
+  font-family: 'My App Icon';
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'My App Icon';
+  font-style: normal; /* whatever is required for your */
+  font-weight: 400;   /* webfont.... */
+  src: url("iconfont.woff2") format("woff2"), url("iconfont.woff") format("woff");
+}
+/*-------------icon-----------------*/
+/*--------------------消除p的margin-bottom---------------*/
+/*--------------------消除p的margin-bottom---------------*/
+.flex {
+    display: flex;
+}
+html{
+  font-size: 62.5%;
+}
+*{
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+.q-notification__message {
+    text-align: center;
+}
+.q-toolbar__title{padding: 0;font-size: 18px;}
+/*.bg-white{position: fixed;}*/
+
+.height {
+    min-height: 100vh;
+}
+.tit-right-place{width: 1.5rem;}
+.title-colom{text-align: left;font-size: 14px;border-bottom: 10px solid #f5f4f9;padding: 10px;}
+.title-colom span{color: #999;font-size: 16px;font-weight: bold;}
+.order-list{padding: 10px;}
+.order-list .li{margin-bottom: 10px;border-bottom: 1px solid #f5f4f9;padding-bottom: 10px;}
+.order-list .fl{font-size: 12px;color: #333}
+.order-list .fl .thunmb{width: 40px;height: 40px;border-radius: 50%;}
+.order-list .fl .h3,.order-list .fl .p{font-size: 14px;height: 20px;line-height: 20px;}
+.order-list .fr,.order-list .fl .p{font-size: 12px;color: #888}
+.order-list .fr{text-align: right;line-height: 40px;}
+.order-list .li .fr .times,.order-list .li .fr .price{font-size: 12px;line-height: 20px;height: 20px;}
+.order-list .li .fr .price span{color: #ff7624;}
+.balance-list .li{border-bottom: 1px dashed #f1f1f1;}
+.text-left{text-align: left !important;}
+
+.q-item--active{color: #21BA45 !important;}
+
+:root {
+    --q-color-primary: #027be3;
+    --q-color-secondary: #26a69a;
+    --q-color-accent: #9c27b0;
+    --q-color-positive: #8dc550;
+    --q-color-negative: #c10015;
+    --q-color-info: #31ccec;
+    --q-color-warning: #f2c037;
+  }
+
+  .bg-green{background: #8dc550 !important}
+
+  .header-fix{position: fixed;top: 0;left: 0;z-index: 9999;}
+  .bgs{background-color: #f5f4f9;}
+  /*-----------------commonColor------------------*/
+.c-orange{
+  background-color: #ffeae9;
+  color: #FF4D33;
+}
+.c-blue{
+  background-color: #E3EDFF;
+  color: #1C73FF;
+}
+.c-purple{
+  background-color: #EDE4FF;
+  color: #5F11D6;
+}
+.c-green{
+  background-color: #E3FFEF;
+  color: #30CD71;
+}
+/*--------------------------new----------------------*/
+.custom-section{
+  background-color: #ffffff;
+}
+.custom-list-item + .custom-list-item {
+  margin-top: .8rem;
+}
+.custom-mat-sm {
+  margin-top: .5rem;
+}
+.custom-btn-80l{
+  width: 80%;
+}
+.custom-form-btn{
+  margin-top: 1rem;
+  text-align: center;
+}
+/*--------------------------------index----------------------*/
+/*统一向右箭头中号*/
+.custom-arrow-right{
+  font-size: 2rem;
+}
+/*flex布局竖向垂直居中*/
+.custom-flex-col-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+/*--------------footer高度调节----------------------*/
+.indexFooter .q-tab--full{
+  min-height: auto;
+}
+/*--------------footer高度调节----------------------*/
