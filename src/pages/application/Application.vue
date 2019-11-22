@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="padding-top: 5rem;">
     <q-header class="bg-green text-white  header-fix">
       <q-toolbar>
 <!--        <q-btn flat round dense class="text-white" v-go-back="'/user/mine'" icon="keyboard_arrow_left" />-->

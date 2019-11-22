@@ -1,7 +1,7 @@
 import Axios from 'axios'
-import QS from 'qs'
-import { Loading, QSpinnerGears, Notify, LocalStorage } from 'quasar'
-import { getSession,clearSession } from 'src/utils/getToken'
+// import QS from 'qs'
+import { Loading, LocalStorage } from 'quasar'
+import { clearSession } from 'src/utils/getToken'
 
 // 创建Axios实例
 const http = Axios.create({
