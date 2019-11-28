@@ -68,10 +68,10 @@ html{
 .q-item--active{color: #21BA45 !important;}
 
 :root {
-    --q-color-primary: #027be3;
+    --q-color-primary: #232D6A;
     --q-color-secondary: #26a69a;
     --q-color-accent: #9c27b0;
-    --q-color-positive: #8dc550;
+    --q-color-positive: #232D6A;
     --q-color-negative: #c10015;
     --q-color-info: #31ccec;
     --q-color-warning: #f2c037;
@@ -132,3 +132,13 @@ html{
   min-height: auto;
 }
 /*--------------footer高度调节----------------------*/
+/*-----------------自定义背景色---------------------*/
+.cus-bg-grey{
+  background: #F5F5F5;
+}
+/*------------------自定义小分割----------------*/
+.cus-split-sm{
+  width: 2px;
+  height: 40%;
+  background: #E6E6E6;
+}

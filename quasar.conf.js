@@ -53,7 +53,7 @@ module.exports = function(ctx) {
 
             components: [
                 'QInput', 'QBtn', 'QIcon', 'QDialog', 'QField', 'QFooter', 'QHeader','QInfiniteScroll','QPullToRefresh','QSelect','QDate','QList','QItem','QItemSection','QItemLabel','QImg',
-              'QAvatar'
+              'QAvatar', 'QPageSticky', 'QMenu'
             ],
             directives: [
                 'ClosePopup','GoBack','Scroll','ScrollFire'

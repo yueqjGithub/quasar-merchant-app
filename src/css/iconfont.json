@@ -27,6 +27,13 @@
       "unicode_decimal": 58883
     },
     {
+      "icon_id": "6205317",
+      "name": "下",
+      "font_class": "arrow_bottom",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
       "icon_id": "6582360",
       "name": "应用",
       "font_class": "yingyong",

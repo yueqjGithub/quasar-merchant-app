@@ -1,17 +1,18 @@
 <template>
   <q-page class="bgss">
-    <div class="welcome fullscreen" v-if="sec!==0">
+<!--    <div class="welcome fullscreen" v-if="sec!==0">-->
 
-    </div>
-    <div class="q-pa-md margins" v-else>
-      <h3>欢迎登陆，知了贝</h3>
+<!--    </div>-->
+    <div class="q-pa-lg">
+      <h3 class="login-tit">登陆</h3>
       <div class="q-gutter-md">
-        <q-input color="green"
+        <q-input color="primary"
           placeholder="请输入手机号"
           ref="input"
+          dens
           v-model.trim="form.username"
           :rules="[
-            val => !!val || '请输入手机号',
+            val => !!val || '请输入账号',
             // val => val.length == 11 || '请输入11位手机号',
             // val => (/^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(18[0-9]{1})|(19[0-9]{1})|(17[0-9]{1}))+\d{8})$/.test(val)) || '请输入正确的手机号'
           ]"
@@ -25,10 +26,11 @@
           </template>
         </q-input>
 
-        <q-input color="green"
+        <q-input color="primary"
           placeholder="请输入密码"
           type="password"
           ref="input"
+          dens
           v-model.trim="form.password"
           :rules="[
             val => !!val || '请输入密码',
@@ -45,9 +47,8 @@
         </q-input>
 
         <div class="q-pa-xs">
-          <q-btn unelevated color="green" class="full-width" :disable="loginbtn" @click="submitCheck" label="登录"></q-btn>
+          <q-btn color="primary" class="full-width custom-login-btn" :disable="loginbtn" @click="submitCheck" label="登陆"></q-btn>
         </div>
-
       </div>
     </div>
   </q-page>
@@ -55,7 +56,9 @@
 
 <script>
   import {notify} from 'src/utils/popups'
-  import {loginSubmit} from 'src/api/login'
+  // import {loginSubmit} from 'src/api/login'
+  // import { mapState } from 'vuex'
+  import urls from 'src/api/urls'
   import {setSession,getSession} from 'src/utils/getToken'
   import md5 from 'js-md5'
   export default {
@@ -70,24 +73,20 @@
       }
     },
     created () {
-      let local = this.$q.localStorage.getItem('token')
+      let token = this.$q.localStorage.getItem('token')
       let user = this.$q.localStorage.getItem('userInfo') || ''
       let vm = this
       if(user){
-        if(user.roleCode == 'hq'){
-          this.$router.push({name:'Index'})
-        }else if(user.roleCode == 'cashier' || user.roleCode == 'shop'){
-          this.$router.push({name:'Cashier'})
-        }
+        vm.tolinks(user.roleCode)
       } else {
-        vm.sec = 3
-        let interval =setInterval(() => {
-          if (vm.sec > 0) {
-            vm.sec --
-          } else {
-            clearInterval(interval)
-          }
-        }, 1000)
+        // vm.sec = 3
+        // let interval =setInterval(() => {
+        //   if (vm.sec > 0) {
+        //     vm.sec --
+        //   } else {
+        //     clearInterval(interval)
+        //   }
+        // }, 1000)
       }
     },
     methods: {
@@ -114,7 +113,7 @@
       submit(){
         let that = this
         let data = {loginid:this.form.username,password:md5(this.form.password)}
-        loginSubmit(data).then(res=>{
+        that.$axios(urls.login, data).then(res=>{
           if(res.code == 'success'){
             setSession('islogin','login')
             setSession('user',res)
@@ -131,10 +130,13 @@
         })
       },
       tolinks(link){
+        this.$q.localStorage.set('currentRole', link)
         if(link == 'hq'){
-          this.$router.push({path:'/user/index'})
+          this.$store.commit('common/setSearchOptions', 0)
+          this.$router.push({path:'/index/companyindex', query: {'role': link}})
         }else if(link == 'cashier' || link == 'shop'){
-          this.$router.push({path:'/page/cashier'})
+          this.$store.commit('common/setSearchOptions', 1)
+          this.$router.push({path:'/index/shopindex', query: {'role': 'shop'}})
         }
       }
     }
@@ -144,7 +146,15 @@
 <style scoped>
   h3{font-size: 20px;}
   .bgss{background-color: #fff;}
-  .margins{padding: 40px;}
+  .login-tit{
+    margin-top: 12vh;
+    font-size: 2.8rem;
+  }
+  .custom-login-btn{
+    height: 4.5rem;
+    font-size: 1.7rem;
+    /*box-shadow: 4px 4px 10px -3px rgba(60, 136, 246, 0.5), 4px 4px 10px -3px rgba(60, 136, 246, 0.5), 4px 4px 10px -3px rgba(60, 136, 246, 0.5);*/
+  }
   .welcome{
     background-image: url("../assets/B-indexBg.png");
     background-size: 100% 100%;
