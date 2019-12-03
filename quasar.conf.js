@@ -4,7 +4,7 @@
 module.exports = function(ctx) {
 
 
-    console.log(ctx)
+    // console.log(ctx)
 
     return {
         // app boot file (/src/boot)
@@ -53,7 +53,7 @@ module.exports = function(ctx) {
 
             components: [
                 'QInput', 'QBtn', 'QIcon', 'QDialog', 'QField', 'QFooter', 'QHeader','QInfiniteScroll','QPullToRefresh','QSelect','QDate','QList','QItem','QItemSection','QItemLabel','QImg',
-              'QAvatar', 'QPageSticky', 'QMenu'
+              'QAvatar', 'QPageSticky', 'QMenu', 'QAvatar', 'QRadio'
             ],
             directives: [
                 'ClosePopup','GoBack','Scroll','ScrollFire'
@@ -101,7 +101,10 @@ module.exports = function(ctx) {
 
         // animations: 'all', // --- includes all animations
         // https://quasar.dev/options/animations
-        animations: [],
+        animations: [
+          'fadeIn', 'fadeOut', 'bounceInRight', 'bounceOutLeft', 'slideInUp', 'slideOutDown',
+          'slideInRight', 'slideOutLeft'
+        ],
 
         // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
         ssr: {

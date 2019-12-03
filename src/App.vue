@@ -31,13 +31,13 @@ export default {
     }
   },
   watch:{
-    $route:function (val) {
-      if(this.statusBarcolorPath.black.indexOf(val.path)!=-1){
-        StatusBar.backgroundColorByHexString("#333");//设置状态栏颜色
-      }else {
-        StatusBar.backgroundColorByHexString("#8dc550");
-      }
-    }
+    // $route:function (val) {
+    //   if(this.statusBarcolorPath.black.indexOf(val.path)!=-1){
+    //     StatusBar.backgroundColorByHexString("#333");//设置状态栏颜色
+    //   }else {
+    //     StatusBar.backgroundColorByHexString("#8dc550");
+    //   }
+    // }
   }
 }
 </script>

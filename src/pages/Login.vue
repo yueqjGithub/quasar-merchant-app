@@ -47,7 +47,7 @@
         </q-input>
 
         <div class="q-pa-xs">
-          <q-btn color="primary" class="full-width custom-login-btn" :disable="loginbtn" @click="submitCheck" label="登陆"></q-btn>
+          <q-btn color="primary" class="full-width custom-login-btn" :disable="loginbtn" @click="submitCheck" label="登陆" :loading="btnLoading"></q-btn>
         </div>
       </div>
     </div>
@@ -66,6 +66,7 @@
       return {
         sec: 0,
         loginbtn:false,
+        btnLoading: false,
         form:{
           username: '',
           password: ''
@@ -113,29 +114,40 @@
       submit(){
         let that = this
         let data = {loginid:this.form.username,password:md5(this.form.password)}
+        this.btnLoading = true
         that.$axios(urls.login, data).then(res=>{
           if(res.code == 'success'){
             setSession('islogin','login')
             setSession('user',res)
             this.$q.localStorage.set('userInfo', res)
+            this.$q.localStorage.set('myAccount', data.loginid)
             that.$store.commit('user/setToken', res.token)
+            if (res.roleCode === 'shop') {
+              this.$q.localStorage.set('socketUrl', res.websocketUrl)
+              this.$q.localStorage.set('currentShop', res.shopid)
+            }
             that.tolinks(res.roleCode)
           } else {
             notify(res.msg)
           }
+          that.btnLoading = false
           that.loginbtn = false
         }).catch(err=>{
           that.loginbtn = false
           console.log(err)
+          that.btnLoading = false
         })
       },
       tolinks(link){
         this.$q.localStorage.set('currentRole', link)
-        if(link == 'hq'){
+        if(link === 'hq'){
+          this.$q.localStorage.remove('currentShop') // 清除缓存中的shop
           this.$store.commit('common/setSearchOptions', 0)
+          this.$store.commit('common/setCurrentRole', link)
           this.$router.push({path:'/index/companyindex', query: {'role': link}})
-        }else if(link == 'cashier' || link == 'shop'){
-          this.$store.commit('common/setSearchOptions', 1)
+        }else if(link === 'cashier' || link === 'shop'){
+          this.$store.commit('common/setSearchOptions', 'shop')
+          this.$store.commit('common/setCurrentRole', link)
           this.$router.push({path:'/index/shopindex', query: {'role': 'shop'}})
         }
       }

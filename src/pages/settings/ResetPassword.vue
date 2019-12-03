@@ -1,65 +1,99 @@
 <template>
   <q-page>
-    <q-header class="bg-green text-white  header-fix">
-      <q-toolbar>
-        <q-btn flat round dense class="text-white" v-go-back="'/page/setting'" icon="keyboard_arrow_left" v-if="showOld"/>
-        <q-btn flat round dense class="text-white" @click="backToStoreInfo" icon="keyboard_arrow_left"  v-if="!showOld"/>
-        <q-toolbar-title class="text-center text-white">修改密码</q-toolbar-title>
-        <span class="tit-right-place"></span>
-      </q-toolbar>
-    </q-header>
-    <div class="q-pa-md">
-      <q-form ref="myForm">
-        <q-input color="green"
-           placeholder="旧密码"
-           ref="input"
-           v-if="showOld"
-           v-model.trim="form.oldPWD"
-           :rules = "[
-              val => !!val || '请输入旧密码',
-           ]"
-           lazy-rules
-        >
-        </q-input>
-        <q-input color="green"
-           placeholder="新密码"
-           ref="input"
-           v-model.trim="form.newPWD"
-           :rules = "[
-              val => !!val || '请输入新密码',
-           ]"
-           lazy-rules
-        >
-        </q-input>
-        <q-input color="green"
-           placeholder="确认新密码"
-           ref="input"
-           v-model.trim = 'form.cPWD'
-           :rules = "[
-              val => !!val || '请再次输入新密码',
-              val => val === form.newPWD || '与新密码输入不一致'
-           ]"
-           lazy-rules
-        >
-        </q-input>
-      </q-form>
-      <div class="custom-form-btn">
-        <q-btn color="positive custom-btn-80l" @click="submit" :loading="loadingBtn">确定</q-btn>
+    <q-header class="my-border">
+      <div class="my-header text-black q-pa-sm bg-white">
+        <div class="my-header-l">
+          <q-btn flat round icon="img:statics/images/back-B.png" @click="backToStoreInfo" v-if="!showOld"></q-btn>
+          <q-btn flat round icon="img:statics/images/back-B.png" v-go-back="'/page/account'" v-if="showOld"></q-btn>
+        </div>
+        <div class="my-header-m text-center">修改密码</div>
+        <div class="my-header-r">
+          <!--          <q-btn rounded unelevated flat label="新建菜品" text-color="primary" class="word-no-wrap"></q-btn>-->
+        </div>
       </div>
-    </div>
+    </q-header>
+    <transition
+      appear
+      enter-active-class="animated slideInRight"
+      leave-active-class="animated slideOutLeft"
+    >
+      <q-page class="bg-white">
+        <q-form ref="myForm">
+          <div class="my-list-card flex-column flex-align-start flex-just-start">
+            <!-------------item------------------->
+            <div class="my-list-item flex-row flex-align-baseline flex-just-start" v-if="showOld">
+              <span class="my-label">旧密码</span>
+              <div class="my-input">
+                <q-input
+                  borderless
+                  dense
+                  :bottom-slots="false"
+                  :hide-bottom-space="true"
+                  v-model="form.oldPWD"
+                  placeholder="填写旧密码"
+                  :rules="[
+                  val => !!val || ''
+                  ]"
+                  lazy-rules
+                />
+              </div>
+            </div>
+            <!-------------item------------------->
+            <div class="my-list-item flex-row flex-align-baseline flex-just-start">
+              <span class="my-label">新密码</span>
+              <div class="my-input">
+                <q-input
+                  borderless
+                  dense
+                  :bottom-slots="false"
+                  :hide-bottom-space="true"
+                  v-model="form.newPWD"
+                  placeholder="填写新密码"
+                  :rules="[
+                  val => !!val || ''
+                  ]"
+                  lazy-rules
+                />
+              </div>
+            </div>
+            <!-------------item------------------->
+            <div class="my-list-item flex-row flex-align-baseline flex-just-start">
+              <span class="my-label">确认密码</span>
+              <div class="my-input">
+                <q-input
+                  borderless
+                  dense
+                  :bottom-slots="false"
+                  :hide-bottom-space="true"
+                  v-model="form.cPWD"
+                  placeholder="再次填写新密码"
+                  :rules="[
+                    val => !!val || '请再次输入新密码',
+                    val => val === form.newPWD || '与新密码输入不一致'
+                  ]"
+                  lazy-rules
+                />
+              </div>
+            </div>
+          </div>
+          <div class="custom-form-btn">
+            <q-btn color="positive custom-btn-80l" @click="submit" :loading="loadingBtn">确定</q-btn>
+          </div>
+        </q-form>
+      </q-page>
+    </transition>
   </q-page>
 </template>
 
 <script>
-import { resetShopPWD, resetBusPWD } from 'src/api/store'
-import {notify} from "../../utils/popups";
+import urls from 'src/api/urls'
 export default {
     name: "ResetPassword",
     data () {
         return {
             loadingBtn: false,
             showOld: true,
-            shopId: '',
+            mobile: '',
             form: {
               oldPWD: '',
               newPWD: '',
@@ -73,14 +107,14 @@ export default {
       let type = this.$route.params.type
       if (type === 2) {
           this.showOld = false
-          this.shopId = this.$route.params.id.admin_userid
+          this.mobile = this.$route.params.id.mobile
           Object.assign(vm.saveInfo, this.$route.params.id)
       }
     },
     methods: {
       backToStoreInfo () {
         // console.log(this.saveInfo)
-        this.$router.push({ name: 'StoreInfo', params: {type: 2, shop: this.saveInfo}})
+        this.$router.push({ name: 'StoreInfo', params: {type: 2, obj: this.saveInfo}})
       },
       submit () {
         let vm = this
@@ -92,26 +126,25 @@ export default {
                 }
                 if (vm.showOld) { // 显示旧密码时，即修改商户密码时
                     params['old_password'] = vm.form.oldPWD
-                    resetBusPWD(params).then(res => {
+                    vm.$axios(urls.resetMypwd, params).then(res => {
                         if (res.code === 'success') {
-                            notify(res.msg)
-                            vm.$router.push({name: 'Mine'})
+                          vm.$q.notify(res.msg)
+                          vm.$router.push({name: 'Mine'})
                         } else {
-                            notify(res.msg)
+                          vm.$q.notify(res.msg)
                         }
                         vm.loadingBtn = false
-                    }, err => {
-                        console.log(err)
+                    }, () => {
                         vm.loadingBtn = false
                     })
                 } else { // 修改门店密码时
-                    params['userid'] = vm.shopId
-                    resetShopPWD(params).then(res => {
+                    params['mobile'] = vm.mobile
+                    vm.$axios(urls.resetShopPwd, params).then(res => {
                         if (res.code === 'success') {
-                            notify(res.msg)
-                            vm.$router.push({name: 'StoresList'})
+                          vm.$q.notify(res.msg)
+                          vm.$router.push({name: 'StoresList'})
                         } else {
-                            notify(res.msg)
+                          vm.$q.notify(res.msg)
                         }
                         vm.loadingBtn = false
                     }, err => {
@@ -129,5 +162,29 @@ export default {
 </script>
 
 <style scoped>
-
+  .my-border{
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .my-tips{
+    font-size: 1.5rem;
+    color: #999999;
+  }
+  .my-list-item{
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .my-list-item-last{
+    width: 100%;
+    padding: 1rem 0;
+  }
+  .my-label{
+    width: 9rem;
+    font-size: 1.6rem;
+    color: #000000;
+    margin-right: 1rem;
+  }
+  .my-input{
+    flex: 2;
+  }
 </style>

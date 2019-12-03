@@ -1,105 +1,86 @@
 <template>
-  <div>
-    <div class="q-pa-sm" id="mapSec"></div>
-    <div>经度：{{lng}}</div>
-    <div>纬度：{{lat}}</div>
+  <div class="bg-white">
+    <div class="my-header text-black q-pa-sm bg-white my-border">
+      <div class="my-header-l">
+        <q-btn flat round icon="img:statics/images/back-B.png" @click="closeDialog"></q-btn>
+      </div>
+      <div class="my-header-m text-center">选择位置</div>
+      <div class="my-header-r">
+<!--        <q-btn flat unelevated label="保存" text-color="primary" class="word-no-wrap" @click="sub"></q-btn>-->
+      </div>
+    </div>
+    <div class="mapDiv">
+      <iframe id="mapPage" width="100%" height="100%" frameborder=0
+              :src="`https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=TGSBZ-3P6WI-GG2GB-5SJBC-SQR5V-OLB6K&referer='知了贝'&mapdraggable=1&coord=${lat},${lng}`">
+      </iframe>
+    </div>
     <div class="custom-form-btn">
-      <q-btn class="custom-btn-80l" color="positive" @click="sub">确定</q-btn>
+      <q-btn class="custom-btn-80l" color="primary" @click="sub">确定</q-btn>
     </div>
   </div>
 </template>
 
 <script>
-function TMap(){
-    return new Promise(function(resolve, reject) {
-        window.init = function() {
-            resolve(qq)
-        }
-        let script = document.createElement('script')
-        script.type = 'text/javascript'
-        script.src = 'https://map.qq.com/api/js?v=2.exp&callback=init&key=TGSBZ-3P6WI-GG2GB-5SJBC-SQR5V-OLB6K'
-        script.onerror = reject
-        document.head.appendChild(script)
-    })
-}
-import { getAddress } from 'src/api/store'
-export default {
-    name: "mapOfstore",
+  export default {
+    name: 'mapOfstore',
     props: ['lat1', 'lng1'],
     data () {
-        return {
-          lat: 30.65618,
-          lng: 104.08329,
-          map: undefined,
-          marker: undefined
-        }
+      return {
+        lat: 30.55059,
+        lng: 104.06502,
+        address: '',
+        map: undefined,
+        marker: undefined
+      }
     },
     created () {
-      // let param = {
-      //   location: [30.65618,104.08329]
-      // }
-      // getAddress(param).then(res => {
-      //   console.log(res)
-      // },err => {
-      //   console.log(err)
-      // })
       if (this.lat1) {
-          this.lat = this.lat1
+        this.lat = this.lat1
       }
       if (this.lng1) {
-          this.lng = this.lng1
+        this.lng = this.lng1
       }
-      this.mapTX(this.lat, this.lng)
+      let vm = this
+      window.addEventListener('message', function(event) {
+        // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+        let loc = event.data;
+        if (loc && loc.module == 'locationPicker') { // 防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+          // console.log(loc)
+          vm.lat = loc.latlng.lat
+          vm.lng = loc.latlng.lng
+          vm.address = loc.poiaddress
+        }
+      }, false)
     },
     methods: {
-        sub () { // 上交经纬度
-            let params = {
-                lng: this.lng,
-                lat: this.lat
-            }
-            this.$emit('sub', params)
-        },
-        mapTX (lat=30.65618,lng=104.08329) {
-            let _this = this
-            TMap().then(qq => {
-                _this.map = new qq.maps.Map(document.getElementById('mapSec'), {
-                    //这里经纬度代理表进入地图显示的中心区域
-                    center: new qq.maps.LatLng(_this.lat, _this.lng),
-                    zoom: 13
-                })
-
-                _this.marker = new qq.maps.Marker({
-                    position: new qq.maps.LatLng(_this.lat, _this.lng), // 纬度，经度,定位地址
-                    map: _this.map
-                });
-                //绑定单击事件添加参数
-                qq.maps.event.addListener(_this.map, 'click', function(event) {
-                    _this.marker.setMap(null);
-                    let lat = event.latLng.getLat()
-                    let lng = event.latLng.getLng()
-                    _this.lng=lng
-                    _this.lat=lat
-
-                    _this.marker = new qq.maps.Marker({
-                        position: new qq.maps.LatLng(lat,lng), // 纬度，经度,定位地址
-                        map: _this.map
-                    });
-
-                    // qq.maps.event.addListener(map,'click',function(event) {
-                    //
-                    // });
-
-                })
-            })
-        },
+      closeDialog () {
+        this.$emit('closeDialog')
+      },
+      sub () { // 上交经纬度
+        let params = {
+          lng: this.lng,
+          lat: this.lat,
+          address: this.address
+        }
+        this.$emit('sub', params)
+      }
     }
-}
+  }
 </script>
 
 <style scoped>
-#mapSec{
-  width: 100%;
-  height: 40vh;
-  margin-top: 5rem;
-}
+  #mapSec{
+    width: 100%;
+    height: 40vh;
+    margin-top: 5rem;
+  }
+  .mapDiv{
+    height: 83vh;
+  }
+  .custom-form-btn {
+    padding: 10px;
+  }
+  .my-border{
+    border-bottom: 1px solid #e6e6e6;
+  }
 </style>

@@ -1,99 +1,116 @@
 <template>
-    <q-page>
-      <q-header bordered class="bg-green text-white  header-fix">
-        <q-toolbar>
-          <q-btn flat round dense class="text-white" :to="{ name: 'Application'}" icon="keyboard_arrow_left" />
-          <q-toolbar-title class="text-center text-white">门店({{storeList.length}})</q-toolbar-title>
-          <q-btn flat dense class="text-white" :to="{name:'StoreInfo', params: {type: 1}}" label="创建门店" />
-        </q-toolbar>
-      </q-header>
-      <div class="store-main q-pa-sm">
-        <div class="store-item q-pa-md" v-for="k in storeList">
-          <div class="store-img">
-            <q-img
-              :src="'https://' + k.photo"
-              spinner-color="white"
-              style="width:5rem;height: 5rem;"
-              :placeholder-src="placeImg"
-            >
-            </q-img>
-          </div>
-          <!---------------------------文字信息----------------------------------->
-          <div class="store-info">
-            <q-item>
-              <q-item-section side>
-                <span class="store-name">{{k.shop_name}}</span>
-              </q-item-section>
-              <q-item-section></q-item-section>
-              <q-item-section side>
-                <q-icon name="create" :size="iconSize" @click="toDetail(k)"></q-icon>
-              </q-item-section>
-            </q-item>
-            <div class="store-address">
-              <q-icon name="fa fa-map-marker" class="address-icon"></q-icon>
-              <span>{{k.address}}</span>
-            </div>
-          </div>
+  <q-page>
+    <q-header class="my-border">
+      <div class="my-header text-black q-pa-sm bg-white">
+        <div class="my-header-l">
+          <q-btn flat round icon="img:statics/images/back-B.png" @click="goBack"></q-btn>
+        </div>
+        <div class="my-header-m text-center">门店管理</div>
+        <div class="my-header-r">
+          <q-btn rounded unelevated label="新建门店" color="primary" text-color="white" class="word-no-wrap" @click="toEdit(type, null)"></q-btn>
         </div>
       </div>
-    </q-page>
+    </q-header>
+    <transition
+      appear
+      enter-active-class="animated slideInRight"
+      leave-active-class="animated slideOutLeft"
+    >
+      <q-page class="q-pa-md bg-white">
+        <div v-for="k in list" :key="k.id" class="my-shop flex-row q-pa-md">
+          <div class="shop-img">
+            <img :src="`https://${k.photo[0]}`" alt="">
+          </div>
+          <div class="shop-info flex-column">
+            <span class="shop-name">{{k.shop_name}}</span>
+            <span class="shop-count">上架菜品数量：{{k.total || 0}}</span>
+          </div>
+          <div class="shop-edit">
+            <q-btn icon="img:statics/images/edit.png" flat round @click="toEdit(2, k)"></q-btn>
+          </div>
+        </div>
+      </q-page>
+    </transition>
+  </q-page>
 </template>
 
 <script>
-import { getShopList } from "../../api/store";
-
+import urls from 'src/api/urls'
 export default {
-    name: "StoresList",
-    data () {
-        return {
-            iconSize: '1rem',
-            placeImg: '',
-            storeList: []
-        }
-    },
-    methods: {
-        toDetail (info) {
-          this.$router.push({ name: 'StoreInfo', params: {type: 2, shop: info}})
-        }
-    },
-    created () {
-        let vm = this
-        getShopList(null).then(res => {
-            vm.storeList = [...res.list]
-        }, err => {
-            console.log(err)
-        })
+  name: "StoresList",
+  data () {
+    return {
+      list: []
     }
+  },
+  created () {
+    this.queryInfo()
+  },
+  methods: {
+    toEdit (type, obj) {
+      this.$router.push({name: 'StoreInfo', params: {type: type, obj: obj}})
+    },
+    goBack () {
+      this.$router.push({name: 'App'})
+    },
+    queryInfo () {
+      let vm = this
+      let params = {
+        'companyid': this.$q.localStorage.getItem('userInfo').companyid
+      }
+      this.$axios(urls.queryMyShop, params).then(res => {
+        if (res.code === 'success') {
+          for (let k in res.list) {
+            if (res.list[k].photo) {
+              let arr = res.list[k].photo.split(',')
+              res.list[k].photo = arr
+            }
+          }
+          vm.list = [...res.list]
+        }
+      }, () => {
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
-.store-main{
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+.my-header{
+  border-bottom: 1px solid #E6E6E6;
 }
-.store-item{
-  background: #ffffff;
-  border-radius: 5px;
-  display: flex;
+.my-shop{
+  border-bottom: 1px solid #e9e9e9;
+}
+.shop-img{
+  flex: 2;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  height: calc((100vw - 5rem)/9*2);
+  background: #F5F5F5;
+}
+.shop-img img{
   width: 100%;
-  justify-content: space-around;
-  align-items: flex-start;
+  height: 100%;
 }
-.store-info{
-  width: calc(100vmin - 6rem);
+.shop-info{
+  flex: 6;
+  justify-content: flex-start;
+  margin-left: 1rem;
 }
-.store-name{
+.shop-edit{
+  flex: 1;
+  justify-content: flex-start;
+}
+.shop-name{
+  margin-top: .5rem;
+  color: #000000;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.shop-count{
   font-size: 1.2rem;
-}
-.address-icon{
-  color: #757575;
-  margin-right: .25rem;
-  font-size: 1rem;
-}
-.store-address{
-  padding: .5rem 1rem;
+  color: #666666;
+  margin-top: 2rem;
 }
 </style>

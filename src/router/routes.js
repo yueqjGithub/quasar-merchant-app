@@ -2,39 +2,35 @@ const routes = [
   {
     path: '/', component: () => import ('layouts/PageLayout.vue'),
     children: [
-      {path: '', name: 'Login', component: () => import ('pages/Login.vue')},
-      {path: '/register', name: 'Register', component: () => import ('pages/Register.vue')}
+      {path: '', name: 'Login', component: () => import ('pages/Login.vue')}
+      // {path: '/register', name: 'Register', component: () => import ('pages/Register.vue')}
     ]
   },
-  {
+  { // 首页新
     path: '/index', component: () => import('layouts/indexLayout.vue'),
     children: [
       {path: 'companyindex', name: 'CompanyIndex', component: () => import('pages/index/company')},
-      {path: 'shopindex', name: 'ShopIndex', component: () => import('pages/index/shop')}
+      {path: 'shopindex', name: 'ShopIndex', component: () => import('pages/index/shop')},
+      {path: 'analysis', name: 'Analysis', component: () => import('pages/analysis/analysis')},
+      {path: 'customer', name: 'Customer', component: () => import('pages/customer/customer')},
+      {path: 'settlement', name: 'Settlement', component: () => import('pages/settlement/settlement')}
     ]
   },
+  { // 对账单明细
+    path: '/detail', name: 'SettlementDetail', component: () => import('pages/settleDetail/settleDetail')
+  },
+  { // 切换门店
+    path: '/changeRole', name: 'ChangeRole', component: () => import('pages/index/chooseUser')
+  },
+  { // 应用首页
+    path: '/app', name: 'App', component: () => import('pages/application/index')
+  },
+  {
+    path: '/mine', name: 'Mine', component: () => import('pages/Mine/index')
+  },
+  // ----------------------以下路由为之前版本
   {
     path: '/scan', component: () => import('pages/module/scan.vue')
-  },
-  {
-    path: '/user', component: () => import ('layouts/UserLayout'),
-    children: [
-      {path: 'index', name: 'Index', component: () => import ('pages/Index'), meta: {title: '统计报表', requireAuth: true}},
-      {
-        path: 'coupon',
-        name: 'Coupon',
-        component: () => import ('pages/Coupon'),
-        meta: {title: '发放优惠券', requireAuth: true}
-      },
-      {path: 'mine', name: 'Mine', component: () => import ('pages/Mine'), meta: {title: '我的信息', requireAuth: true}}, // 我的主页
-      {
-        path: 'application',
-        name: 'Application',
-        component: () => import ('pages/application/Application'),
-        meta: {title: '应用', requireAuth: true}
-      }, // 应用主页
-
-    ]
   },
   {
     path: '/page', component: () => import ('layouts/HeaderLayout'),
@@ -100,13 +96,8 @@ const routes = [
         component: () => import ('pages/Withdrawal'),
         meta: {title: '提现', requireAuth: true}
       },
+      {path: 'register', name: 'Register', component: () => import ('pages/index/register.vue')}, // 君子约定，以此为界--入驻
       // {path: 'createpay',name: 'createPay',component: () =>import ('pages/CreatePay'),meta: {title: '充值',requireAuth: true }}
-      {
-        path: 'setting',
-        name: 'Setting',
-        component: () => import ('pages/setting'),
-        meta: {title: '设置', requireAuth: true}
-      }, // 设置主页
       {
         path: 'resetpwd',
         name: 'ResetPassword',
@@ -114,9 +105,14 @@ const routes = [
         meta: {title: '修改密码', requireAuth: true}
       }, // 修改密码
       {
-        path: 'userinfo',
-        name: 'UserInfo',
-        component: () => import ('pages/userInfo/UserInfo'),
+        path: 'contract',
+        name: 'Contract',
+        component: () => import ('pages/contract/contract')
+      }, // 合同
+      {
+        path: 'account',
+        name: 'Account',
+        component: () => import ('pages/Mine/account'),
         meta: {title: '个人资料', requireAuth: true}
       }, // 个人资料首页
       {
@@ -124,13 +120,23 @@ const routes = [
         name: 'StoresList',
         component: () => import ('pages/application/StoresList'),
         meta: {title: '门店', requireAuth: true}
-      }, // 门店列表
+      }, // 门店列表111
       {
         path: 'storeinfo',
         name: 'StoreInfo',
-        component: () => import ('pages/application/StoreInfo'),
-        meta: {title: '门店详情', requireAuth: true}
-      } // 门店详情
+        component: () => import('pages/application/StoreInfo')
+      }, // 门店信息
+      {
+        path: 'product',
+        name: 'Product',
+        component: () => import ('pages/product/product'),
+        meta: {title: '门店', requireAuth: true}
+      }, // 菜品列表111
+      {
+        path: 'productinfo',
+        name: 'ProductInfo',
+        component: () => import('pages/product/productInfo')
+      } // 菜品详情
     ]
   }
 ]
